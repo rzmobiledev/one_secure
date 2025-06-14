@@ -1,0 +1,16 @@
+services:
+  db:
+    container_name: db
+    image: postgres:16
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=${DBNAME}
+      - POSTGRES_PASSWORD=${DBPASSWORD}
+      - POSTGRES_USER=${DBUSER}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
