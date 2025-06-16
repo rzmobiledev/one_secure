@@ -67,6 +67,9 @@ class MailRecord:
             print('DKIM check is running....')
             while ans <= 1 and i <= len(s):
                 try:
+                    if i > 10:
+                        ans = 2
+                        print("\n[!] Cannot verify DKIM. it took too long to verify DKIM Record using available selectors")
 
                     answers = dns.resolver.resolve(s[i]+"._domainkey."+d, "TXT")
                     for data in answers:
