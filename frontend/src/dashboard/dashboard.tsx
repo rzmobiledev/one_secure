@@ -1,11 +1,21 @@
+import React from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import {useMutation} from "@tanstack/react-query"
+import {useMutation } from "@tanstack/react-query"
 import '../assets/dashboard.css'
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, selectAllAuthState } from '../redux/features/authSlice'
-import {logoutMutationFn} from "../utils/api"
+import {logoutMutationFn, domainCheckMutationFn} from "../utils/api"
 
 function Dashboard() {
+
+    type ResData = {
+        data: {
+            data: string
+        }
+    }
+
+    const [domainName, setDomainName] = React.useState<string>('')
+    const [result, setResult] = React.useState<string>('')
     const dispatch = useDispatch()
     const { isUser } = useSelector(selectAllAuthState);
     const navigate = useNavigate();
@@ -13,6 +23,11 @@ function Dashboard() {
     const { mutate } = useMutation({
         mutationFn: logoutMutationFn,
     });
+
+    const { mutate: checkDomain, isPending, isError, data, error } = useMutation({
+        mutationFn: domainCheckMutationFn,
+    })
+
 
     if (!isUser) {
         navigate({ to: '/login' });
@@ -30,6 +45,27 @@ function Dashboard() {
             }
         })
       }
+
+      const checkDomainHandler = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const domain = formData.get('domain') as string
+
+        setDomainName(domain)
+        if (!domain) return
+        checkDomain({ domain }, {
+            onSuccess: (data) => {
+                const rData = data as unknown as ResData
+                const res = rData.data.data
+                setResult(res)
+                return
+            },
+            onError: (error: unknown) => {
+                console.log(error)
+            }
+        })
+      }
+      
   return (
     <div className="dashboard">
         <div className="sidebar">
@@ -42,25 +78,20 @@ function Dashboard() {
         <div className="main-content">
             <div className="stats-grid">
                 <div className="stat-card">
-                    <h3>Checking Domain</h3>
-                    <p>1,234</p>
-                </div>
-            </div>
-            
-            <div className='stats-grid'>
-                <div className="form-group">
-                    <label htmlFor="domain">Check Domain here</label>
-                    <input type="text" id="domain" name="domain" required placeholder='facebook.com & hit enter'/>
-                </div>
-                <div className="stat-card">
-                    <h3>Total Users</h3>
-                    <p>1,234</p>
+                    <h3>Checking Domain {domainName}</h3>
+                    <div className='stats-grid'>
+                        <form className="form-group" onSubmit={checkDomainHandler}>
+                            <label htmlFor="domain">Check Domain here</label>
+                            <input type="text" id="domain" name="domain" required placeholder='facebook.com & hit enter'/>
+                            <button type="submit" disabled={isPending} style={{marginTop: 5}}>{isPending ? "Please wait..." : "Check"}</button>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div className="chart-container">
-                <h3>Performance Overview</h3>
+                <h3>Output</h3>
                 <div id="chart">
-                    <p style={{ textAlign: "center", padding: "40px" }}>Chart Placeholder</p>
+                    <p style={{ textAlign: "left", paddingTop: 20}}>{result ? result : "Result of checking domain will display here..."}</p>
                 </div>
             </div>
         </div>
