@@ -11,6 +11,7 @@ import { fifteenMinutesFromNow, fortyFiveMinutesFromNow } from '../utils/dateTim
 import { refreshTokenSignOptions, signJWTToken } from '../utils/jwt'
 import { AuthService } from './auth.service'
 import { clearAuthenticationCookies, getAccessTokenCookieOptions, setAuthenticationCookies } from '../utils/cookie'
+import { isValidDomain } from '../validators/domain.validator'
 
   
 export class UserController {
@@ -175,8 +176,16 @@ export class UserController {
   public domainCheck = async(req: Request, res: Response): Promise<any> => {
     
       try{
-        
-        const pythonProcess = spawn('python', ['domaincheck/main.py', '-d', 'facebook.com']);
+        const {domain} = req.body
+        if (!isValidDomain(domain)){
+          throw new ErrorException(
+            "Invalid domain provided",
+            ErrorCode.INVALID_DOMAIN,
+            HTTP_STATUS.BAD_REQUEST
+          );
+        }
+
+        const pythonProcess = spawn('python', ['domaincheck/main.py', '-d', String(domain)]);
         let result = '';
         
         pythonProcess.stdout.on('data', (data) => {

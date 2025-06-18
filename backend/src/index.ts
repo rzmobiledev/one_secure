@@ -1,13 +1,21 @@
 import express, {Express, NextFunction, Request, Response} from 'express';
 import cors from "cors"
+import swaggerUi from 'swagger-ui-express';
 import cookieParser from "cookie-parser"
 import { getEnv } from './utils/getEnv';
 import Routes from './controller/router';
 import { errorHandler } from './utils/errorHandler';
+import YAML from 'yamljs';
+import fs from 'fs';
 
 const app: Express = express();
 const hostname: string = String(process.env.HOST) || 'localhost';
 const port: number = Number(getEnv('HOST_PORT')) || 8080;
+
+// app.set('trust proxy', 1)
+
+const file  = fs.readFileSync('./src/swagger/swagger.yaml', 'utf8')
+const swaggerDocument = YAML.parse(file)
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -38,9 +46,13 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use(`/${getEnv('API')}`, Routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  explorer: true
+}));
+
 app.use(errorHandler)
 
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
     console.log(`Server running on ${hostname}:${port}`);
 })
