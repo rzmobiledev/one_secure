@@ -12,6 +12,8 @@ const app: Express = express();
 const hostname: string = String(process.env.HOST) || 'localhost';
 const port: number = Number(getEnv('HOST_PORT')) || 8080;
 
+// app.set('trust proxy', 1)
+
 const file  = fs.readFileSync('./src/swagger/swagger.yaml', 'utf8')
 const swaggerDocument = YAML.parse(file)
 
@@ -51,6 +53,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
 app.use(errorHandler)
 
 
-app.listen(port, () => {
+app.listen(port, hostname, () => {
     console.log(`Server running on ${hostname}:${port}`);
 })
