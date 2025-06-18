@@ -10,8 +10,7 @@ Clone this repo to your laptop.
 to run the project, please open two terminal (front end / backend)
 
 ### STEP 1
-
-on first terminal please run
+copy and paste file env.backend to backend folder. rename it to `.env` Afterwards on first terminal please run
 ```bash
   cd backend
 ```
@@ -38,7 +37,7 @@ and now please run
 npm run dev
 ```
 ### STEP 2
-Open second terminal and run
+copy and paste file env.frontend to frontend folder. rename it to `.env` Then open second terminal and run
 ```bash
 cd frontend
 ```
