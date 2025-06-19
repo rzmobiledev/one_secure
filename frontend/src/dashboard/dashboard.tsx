@@ -14,6 +14,10 @@ function Dashboard() {
         }
     }
 
+    type ErrorResponse = {
+        message: string
+    }
+
     const [domainName, setDomainName] = React.useState<string>('')
     const [result, setResult] = React.useState<string>('')
     const dispatch = useDispatch()
@@ -24,7 +28,7 @@ function Dashboard() {
         mutationFn: logoutMutationFn,
     });
 
-    const { mutate: checkDomain, isPending, isError, data, error } = useMutation({
+    const { mutate: checkDomain, isPending } = useMutation({
         mutationFn: domainCheckMutationFn,
     })
 
@@ -60,8 +64,8 @@ function Dashboard() {
                 setResult(res)
                 return
             },
-            onError: (error: unknown) => {
-                console.log(error)
+            onError: (error: ErrorResponse) => {
+                setResult(error.message)
             }
         })
       }

@@ -64,7 +64,6 @@ class MailRecord:
                  'care', '0xdeadbeef', 'yousendit', 'www', 'tilprivate', 'testdk', 'snowcrash', 'smtpcomcustomers', 'smtpauth', 'smtp', 'sl', 'sharedpool', 'ses', 'server', 'scooby', 'scarlet', 'safe', 's', 'pvt', 'primus', 'primary', 'postfix.private', 'outbound', 'originating', 'one', 'neomailout', 'mx', 'msa', 'monkey', 'mkt', 'mimi', 'mdaemon', 'mailrelay', 'mailjet', 'mail-dkim', 'mailo', 'mandrill', 'lists', 'iweb', 'iport', 'id', 'hubris', 'googleapps', 'global', 'gears', 'exim4u', 'exim', 'et', 'dyn', 'duh', 'dksel', 'dkimmail', 'corp', 'centralsmtp', 'ca', 'bfi', 'auth', 'allselector', 'zendesk1']
             ans = 1
             i = 0
-            print('DKIM check is running....')
             while ans <= 1 and i <= len(s):
                 try:
                     if i > 10:
