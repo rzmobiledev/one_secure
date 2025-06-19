@@ -1,0 +1,14 @@
+node_modules
+### BACKEND
+node_modules/
+.env
+.venv
+env
+venv
+__pycache__/
+build
+npm-debug.log
+.DS_Store
+
+### Frontend
+.tanstack

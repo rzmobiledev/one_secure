@@ -1,4 +1,4 @@
-import express, {Express, NextFunction, Request, Response} from 'express';
+import express, {Express, Request, Response} from 'express';
 import cors from "cors"
 import swaggerUi from 'swagger-ui-express';
 import cookieParser from "cookie-parser"
@@ -7,6 +7,7 @@ import Routes from './controller/router';
 import { errorHandler } from './utils/errorHandler';
 import YAML from 'yamljs';
 import fs from 'fs';
+
 
 const app: Express = express();
 const hostname: string = String(process.env.HOST) || 'localhost';
@@ -46,6 +47,10 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use(`/${getEnv('API')}`, Routes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  explorer: true
+}));
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
   explorer: true
 }));
