@@ -28,6 +28,12 @@ Please wait until installation completed. Next
 ```bash
 npm install
 ```
+```bash
+npx prisma generate
+```
+```bash
+npm run dev
+```
 next make sure your docker is running. You need to install postgres on docker by running. Make sure not `port 5432` being used by another service.
 ```bash
 docker compose up -d
@@ -43,9 +49,6 @@ cd frontend
 ```
 ```bash
 npm i
-```
-```bash
-npx prisma generate
 ```
 ```bash
 npm run dev
