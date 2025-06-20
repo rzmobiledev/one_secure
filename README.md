@@ -21,7 +21,7 @@ Next back to project path (where `docker-compose.yaml` located) and run `docker 
 ```
 Access the website with current link.
 ```bash
-http://127.0.0.1:5713
+http://127.0.0.1:5173
 ```
 **Note**: Do not use `localhost` on above link otherwise your `accessToken` will not work as expected.
 
@@ -37,7 +37,7 @@ copy and paste file `env.backend` to backend folder. rename it to `.env`. Next o
 - `HOST='localhost'`
 - `COOKIE_DOMAIN='localhost'`
 
-Next do the same with `env.frontend` file, copy and paste to `frontend` folder and rename it to `.env` file and change:
+Next do the same with `env.frontend` file, copy and paste to `frontend` folder and rename it to `.env` file and change it to:
 ```bash
 VITE_API_BASE_URL='http://localhost:5000/api/v1'
 ```
