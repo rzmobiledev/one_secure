@@ -1,8 +1,7 @@
 #!/bin/sh
 
 set -e
-
-npx prisma generate
+/usr/local/bin/wait-for-it.sh db:5432
 npx prisma db push
 npm run start
 echo "================================="

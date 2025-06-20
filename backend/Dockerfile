@@ -1,26 +1,31 @@
-FROM node:current-alpine3.21 AS base
+FROM python:3.10.5-slim-buster AS base
+
 LABEL maintainer="rzmobiledev@gmail.com"
+ENV PYTHONUNBUFFERED=1
 
 FROM base AS builder
 WORKDIR /install
-COPY package*.json .
+COPY requirements.txt .
 COPY scripts/ /scripts
-RUN apk update && apk upgrade && apk add --no-cache bash && \
-apk add --update --no-cache python3 py3-pip && \
-ln -sf python3 /usr/bin/python && \
-pip3 install --no-cache --upgrade pip3 setuptools && \
-pip3 install --prefix="/install" -r requirements_new.txt && \
-adduser --disabled-password --no-create-home rz && \
-chmod -R +x /scripts 
-
+RUN apt update && \
+	pip install --upgrade pip && pip install --prefix="/install" -r requirements.txt && \
+    adduser --disabled-password --no-create-home \
+    rz && chmod -R +x /scripts
+	
 USER rz
 
-FROM base AS production
+FROM base AS prod
 WORKDIR /app
-COPY . /app
+COPY --from=builder  /install /usr/local
 COPY --from=builder /scripts /usr/local/bin
-RUN npm ci --only=production && rm -rf ./dist && npm run build 
+COPY . .
+RUN  apt-get update && apt-get install -y curl gnupg && \
+curl -sL https://deb.nodesource.com/setup_22.x | bash - && \
+apt-get install -y nodejs && \ 
+npm ci && rm -rf ./dist && npm run build
+COPY /domaincheck /dist/domaincheck
+COPY /prisma ./dist
 
-EXPOSE 5000
 ENV PATH="/scripts:usr/local/bin:$PATH"
+EXPOSE 5000
 ENTRYPOINT ["automation.sh"]

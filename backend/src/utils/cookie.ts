@@ -9,7 +9,7 @@ const defaultCookie: CookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? 'strict' : 'lax',
-    domain: getEnv("HOST","localhost").split(',')[0], // Use the first domain from the list
+    domain: getEnv("COOKIE_DOMAIN","localhost").split(',')[0], // Use the first domain from the list
 }
 
 export const getRefreshTokenCookieOptions = (): CookieOptions => {

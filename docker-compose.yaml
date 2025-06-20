@@ -5,12 +5,38 @@ services:
     restart: always
     ports:
       - 5432:5432
+    env_file:
+      - ./backend/.env
     environment:
       - POSTGRES_DB=${DBNAME}
       - POSTGRES_PASSWORD=${DBPASSWORD}
       - POSTGRES_USER=${DBUSER}
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  backend:
+    container_name: be
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/.env
+    ports:
+      - 5000:5000
+    depends_on:
+      - db
+
+  frontend:
+    container_name: fe
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - ./frontend/.env
+    ports:
+      - 5173:5173
+    depends_on:
+      - backend
 
 volumes:
   pgdata:
