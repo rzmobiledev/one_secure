@@ -1,4 +1,5 @@
 import { PrismaClient, Prisma  } from '@prisma/client'
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library'
 import { spawn } from 'child_process'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import {Request, Response} from 'express'
@@ -42,7 +43,7 @@ export class UserController {
 
               return res.status(201).json({id: user.id, username: user.username, email: user.email});
         }catch(e){
-            if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            if (e instanceof PrismaClientKnownRequestError) {
                 // The .code property can be accessed in a type-safe manner
                 if (e.code === 'P2002') {
                   return res.status(400).json({error: 'User with this email already exist'});

@@ -21,7 +21,6 @@ export const loginMutationFn: (data: LoginType) => Promise<AxiosResponse<unknown
     await API.post("/users/login", data)
 
 export const registerMutationFn: (data: RegisterType) => Promise<AxiosResponse<unknown>> = async (data: RegisterType):Promise<AxiosResponse<unknown>> => {
-    console.log(API) 
     return await API.post("/users", data)}
 
 export const logoutMutationFn: () => Promise<AxiosResponse<unknown>> = async():Promise<AxiosResponse<unknown>> =>

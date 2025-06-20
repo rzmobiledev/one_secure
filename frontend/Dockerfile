@@ -14,9 +14,9 @@ FROM base AS production
 WORKDIR /app
 COPY . /app
 COPY --from=builder /scripts /usr/local/bin
-RUN npm ci --only=production && rm -rf ./dist && npm run build 
+RUN npm ci && rm -rf ./dist && npm run build
 
 
-EXPOSE 5713
+EXPOSE 5173
 ENV PATH="/scripts:usr/local/bin:$PATH"
 ENTRYPOINT ["automation.sh"]
