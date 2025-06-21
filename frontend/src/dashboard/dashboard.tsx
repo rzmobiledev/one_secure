@@ -100,7 +100,7 @@ function Dashboard() {
             </div>
             {result ? (
                 <div className="chart-container" style={{marginTop: 15}}>
-                    <h3>Output</h3>
+                    <h3>Notes:</h3>
                     <div id="chart">
                         <div style={{ textAlign: "left", paddingTop: 20}}>
                         <ul dir="auto">
