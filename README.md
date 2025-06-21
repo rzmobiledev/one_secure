@@ -1,4 +1,4 @@
-
+A custom dashboard showing the status of an organization's domain DMARC, SPF, DKIM and mail server echo output.
 # Installation
 
 Clone this repo to your laptop.
